@@ -8,16 +8,19 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
     private BluetoothManager bluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
+    private MyLeScanCallback myLeScanCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,4 +78,20 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    public void scanDevices(View view) {
+        if (bluetoothAdapter.isEnabled()){
+            myLeScanCallback = new MyLeScanCallback();
+            bluetoothAdapter.startLeScan(myLeScanCallback);
+        }
+    }
+
+    private class MyLeScanCallback
+            implements BluetoothAdapter.LeScanCallback {
+        @Override
+        public void onLeScan(BluetoothDevice bluetoothDevice, int i, byte[] bytes) {
+            Log.v("brad", "i got it");
+        }
+    }
+
 }

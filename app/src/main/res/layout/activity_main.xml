@@ -19,6 +19,12 @@
         android:text="Disable BLE"
         android:onClick="disableBle"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan Devices"
+        android:onClick="scanDevices"
+        />
 
 
 
