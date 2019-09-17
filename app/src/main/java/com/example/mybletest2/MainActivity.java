@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -43,5 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void init(){
 
+    }
+
+    public void enableBle(View view) {
+
+    }
+
+    public void disableBle(View view) {
+        
     }
 }
