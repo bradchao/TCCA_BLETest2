@@ -25,6 +25,12 @@
         android:text="Scan Devices"
         android:onClick="scanDevices"
         />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stop Scan Devices"
+        android:onClick="stopScanDevices"
+        />
 
 
 

@@ -98,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void stopScanDevices(View view) {
+        if (bluetoothLeScanner != null){
+            bluetoothLeScanner.stopScan(myScanCallback);
+        }
+    }
+
     private class MyScanCallback extends ScanCallback {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
