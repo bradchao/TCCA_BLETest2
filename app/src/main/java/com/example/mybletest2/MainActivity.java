@@ -10,6 +10,9 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothManager bluetoothManager;
     private BluetoothAdapter bluetoothAdapter;
     private MyLeScanCallback myLeScanCallback;
+
+    private BluetoothLeScanner bluetoothLeScanner;
+    private MyScanCallback myScanCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +87,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void scanDevices(View view) {
         if (bluetoothAdapter.isEnabled()){
-            myLeScanCallback = new MyLeScanCallback();
-            bluetoothAdapter.startLeScan(myLeScanCallback);
+            //myLeScanCallback = new MyLeScanCallback();
+            //bluetoothAdapter.startLeScan(myLeScanCallback);
+
+            bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
+            myScanCallback = new MyScanCallback();
+            bluetoothLeScanner.startScan(myScanCallback);
+
+
+        }
+    }
+
+    private class MyScanCallback extends ScanCallback {
+        @Override
+        public void onScanResult(int callbackType, ScanResult result) {
+            super.onScanResult(callbackType, result);
+
+            BluetoothDevice device = result.getDevice();
+            Log.v("brad", device.getAddress());
+
         }
     }
 
@@ -90,7 +113,9 @@ public class MainActivity extends AppCompatActivity {
             implements BluetoothAdapter.LeScanCallback {
         @Override
         public void onLeScan(BluetoothDevice bluetoothDevice, int i, byte[] bytes) {
-            Log.v("brad", "i got it");
+            String mac = bluetoothDevice.getAddress();
+            String name = bluetoothDevice.getName();
+            Log.v("brad", mac +"; " +name);
         }
     }
 
