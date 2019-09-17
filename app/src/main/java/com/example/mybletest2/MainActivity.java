@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothLeScanner bluetoothLeScanner;
     private MyScanCallback myScanCallback;
 
+    private BluetoothDevice bluetoothDevice;
+    private boolean isScan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
             myScanCallback = new MyScanCallback();
             bluetoothLeScanner.startScan(myScanCallback);
-
+            isScan = true;
 
         }
     }
@@ -112,7 +115,17 @@ public class MainActivity extends AppCompatActivity {
             BluetoothDevice device = result.getDevice();
             Log.v("brad", device.getAddress());
 
+            if (isScan && device.getName() != null && device.getName().contains("Brad")){
+                isScan = false;
+                bluetoothDevice = device;
+                stopScanDevices(null);
+                connectDevice();
+            }
         }
+    }
+
+    private void connectDevice(){
+        Log.v("brad", "start connect...");
     }
 
     private class MyLeScanCallback
