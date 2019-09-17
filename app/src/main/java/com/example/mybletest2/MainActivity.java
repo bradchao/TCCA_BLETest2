@@ -13,6 +13,7 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
@@ -141,6 +142,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             super.onConnectionStateChange(gatt, status, newState);
+            Log.v("brad", "newState = " +newState);
+            if (newState == BluetoothProfile.STATE_CONNECTING){
+                Log.v("brad", "ing...");
+            }else if (newState == BluetoothProfile.STATE_CONNECTED){
+                Log.v("brad", "ed");
+            }
         }
 
         @Override
