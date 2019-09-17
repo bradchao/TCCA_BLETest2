@@ -9,6 +9,9 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothDevice bluetoothDevice;
     private boolean isScan;
+    private MyGattCallback myGattCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +130,40 @@ public class MainActivity extends AppCompatActivity {
 
     private void connectDevice(){
         Log.v("brad", "start connect...");
+
+        myGattCallback = new MyGattCallback();
+        bluetoothDevice.connectGatt(this, false, myGattCallback);
+
+
     }
+
+    private class MyGattCallback extends BluetoothGattCallback {
+        @Override
+        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            super.onConnectionStateChange(gatt, status, newState);
+        }
+
+        @Override
+        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+            super.onServicesDiscovered(gatt, status);
+        }
+
+        @Override
+        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            super.onCharacteristicRead(gatt, characteristic, status);
+        }
+
+        @Override
+        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            super.onCharacteristicWrite(gatt, characteristic, status);
+        }
+
+        @Override
+        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+            super.onCharacteristicChanged(gatt, characteristic);
+        }
+    }
+
 
     private class MyLeScanCallback
             implements BluetoothAdapter.LeScanCallback {
