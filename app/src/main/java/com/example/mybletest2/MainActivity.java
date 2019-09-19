@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.List;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     private BluetoothManager bluetoothManager;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private MyGattCallback myGattCallback;
 
     private BluetoothGatt bluetoothGatt;
+
+    private UUID uuidNotify = UUID.fromString("00002a19-0000-1000-8000-00805f9b34fb");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.v("brad", "notify:" + chart.getUuid().toString());
                         }else if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY + BluetoothGattCharacteristic.PROPERTY_READ){
                             Log.v("brad", "R+N:" + chart.getUuid().toString());
+                            gatt.setCharacteristicNotification(chart,true);
                         }else {
                             Log.v("brad", "other:" + chart.getProperties());
                         }
@@ -217,6 +221,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
+
+            Log.v("brad", "OK");
         }
     }
 
