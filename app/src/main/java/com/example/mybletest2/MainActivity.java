@@ -12,6 +12,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.BluetoothLeScanner;
@@ -23,6 +24,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private BluetoothManager bluetoothManager;
@@ -173,7 +176,14 @@ public class MainActivity extends AppCompatActivity {
             super.onServicesDiscovered(gatt, status);
 
             Log.v("brad", status + ":" + BluetoothGatt.GATT_SUCCESS);
-
+            if (status == BluetoothGatt.GATT_SUCCESS){
+                List<BluetoothGattService> services = gatt.getServices();
+                for (BluetoothGattService service : services){
+                    if (service.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY){
+                        Log.v("brad", service.getUuid().toString());
+                    }
+                }
+            }
 
 
         }
