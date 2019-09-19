@@ -120,12 +120,18 @@ public class MainActivity extends AppCompatActivity {
             BluetoothDevice device = result.getDevice();
             Log.v("brad", device.getAddress());
 
-            if (isScan && device.getName() != null && device.getName().contains("Brad")){
-                isScan = false;
-                bluetoothDevice = device;
-                stopScanDevices(null);
-                connectDevice();
+//            if (isScan && device.getName() != null && device.getName().contains("Brad")){
+//                isScan = false;
+//                bluetoothDevice = device;
+//                stopScanDevices(null);
+//                connectDevice();
+//            }
+
+            if (device.getType() == BluetoothDevice.DEVICE_TYPE_LE &&
+                device.getName() != null) {
+                Log.v("brad", device.getName() + "=> " + device.getAddress());
             }
+
         }
     }
 
@@ -170,6 +176,10 @@ public class MainActivity extends AppCompatActivity {
             super.onCharacteristicChanged(gatt, characteristic);
         }
     }
+
+
+
+
 
 
     private class MyLeScanCallback
