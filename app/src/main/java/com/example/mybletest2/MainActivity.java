@@ -182,6 +182,22 @@ public class MainActivity extends AppCompatActivity {
                     if (service.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY){
                         Log.v("brad", service.getUuid().toString());
                     }
+
+                    List<BluetoothGattCharacteristic> charts =  service.getCharacteristics();
+                    for (BluetoothGattCharacteristic chart : charts){
+                        if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_READ){
+                            Log.v("brad", "read:" + chart.getUuid().toString());
+                        }else if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE){
+                            Log.v("brad", "write:" + chart.getUuid().toString());
+                        }else if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY){
+                            Log.v("brad", "notify:" + chart.getUuid().toString());
+                        }else if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY + BluetoothGattCharacteristic.PROPERTY_READ){
+                            Log.v("brad", "R+N:" + chart.getUuid().toString());
+                        }else {
+                            Log.v("brad", "other:" + chart.getProperties());
+                        }
+                    }
+
                 }
             }
 
