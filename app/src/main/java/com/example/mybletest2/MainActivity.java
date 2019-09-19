@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private UUID uuidNotify = UUID.fromString("00002a19-0000-1000-8000-00805f9b34fb");
 
-    private BluetoothGattCharacteristic readChart;
+    private BluetoothGattCharacteristic readChart, writeChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void write(View view) {
+        writeChart.setValue(new byte[]{97,98,99,100});
+        if (bluetoothGatt.writeCharacteristic(writeChart)){
+            Log.v("brad", "writing...");
+        }
     }
 
     private class MyScanCallback extends ScanCallback {
@@ -208,6 +212,11 @@ public class MainActivity extends AppCompatActivity {
 
                         }else if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE){
                             Log.v("brad", "write:" + chart.getUuid().toString());
+
+                            if (chart.getUuid().toString().equals("00002a39-0000-1000-8000-00805f9b34fb")){
+                                writeChart = chart;
+                            }
+
                         }else if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY){
                             Log.v("brad", "notify:" + chart.getUuid().toString());
                             gatt.setCharacteristicNotification(chart,true);
@@ -240,6 +249,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
+            Log.v("brad", "write");
+            byte[] value = characteristic.getValue();
+            for (byte v : value){
+                Log.v("brad", "value => " + v);
+            }
+
         }
 
         @Override
