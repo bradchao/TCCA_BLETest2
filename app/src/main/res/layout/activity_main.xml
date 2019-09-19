@@ -32,7 +32,19 @@
         android:onClick="stopScanDevices"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="read"
+        android:onClick="read"
+        />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="write"
+        android:onClick="write"
+        />
 
 
 

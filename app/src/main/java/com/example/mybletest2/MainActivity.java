@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     private UUID uuidNotify = UUID.fromString("00002a19-0000-1000-8000-00805f9b34fb");
 
+    private BluetoothGattCharacteristic readChart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +122,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void read(View view) {
+        if (bluetoothGatt.readCharacteristic(readChart)){
+            Log.v("brad", "reading...");
+        }
+    }
+
+    public void write(View view) {
+    }
+
     private class MyScanCallback extends ScanCallback {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -190,10 +201,16 @@ public class MainActivity extends AppCompatActivity {
                     for (BluetoothGattCharacteristic chart : charts){
                         if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_READ){
                             Log.v("brad", "read:" + chart.getUuid().toString());
+
+                            if (chart.getUuid().toString().equals("00002a38-0000-1000-8000-00805f9b34fb")){
+                                readChart = chart;
+                            }
+
                         }else if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE){
                             Log.v("brad", "write:" + chart.getUuid().toString());
                         }else if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY){
                             Log.v("brad", "notify:" + chart.getUuid().toString());
+                            gatt.setCharacteristicNotification(chart,true);
                         }else if (chart.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY + BluetoothGattCharacteristic.PROPERTY_READ){
                             Log.v("brad", "R+N:" + chart.getUuid().toString());
                             gatt.setCharacteristicNotification(chart,true);
@@ -211,6 +228,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicRead(gatt, characteristic, status);
+
+            Log.v("brad", "read");
+            byte[] value = characteristic.getValue();
+            for (byte v : value){
+                Log.v("brad", "v = " + v);
+            }
+
         }
 
         @Override
