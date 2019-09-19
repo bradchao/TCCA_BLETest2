@@ -221,8 +221,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
+            byte[] value = characteristic.getValue();
+            for (byte v : value){
+                Log.v("brad", "value => " + v);
+            }
 
-            Log.v("brad", "OK");
         }
     }
 
