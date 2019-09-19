@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isScan;
     private MyGattCallback myGattCallback;
 
+    private BluetoothGatt bluetoothGatt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         if (bluetoothAdapter.isEnabled()){
             //myLeScanCallback = new MyLeScanCallback();
             //bluetoothAdapter.startLeScan(myLeScanCallback);
-
+            Log.v("brad", "scanDevices");
             bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
             myScanCallback = new MyScanCallback();
             bluetoothLeScanner.startScan(myScanCallback);
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             super.onScanResult(callbackType, result);
 
             BluetoothDevice device = result.getDevice();
-            Log.v("brad", device.getAddress());
+            //Log.v("brad", device.getAddress());
 
 //            if (isScan && device.getName() != null && device.getName().contains("Brad")){
 //                isScan = false;
@@ -127,9 +129,15 @@ public class MainActivity extends AppCompatActivity {
 //                connectDevice();
 //            }
 
-            if (device.getType() == BluetoothDevice.DEVICE_TYPE_LE &&
-                device.getName() != null) {
+            if (isScan && device.getType() == BluetoothDevice.DEVICE_TYPE_LE &&
+                device.getName() != null
+                    && device.getName().contains("Brad")) {
                 Log.v("brad", device.getName() + "=> " + device.getAddress());
+
+                isScan = false;
+                bluetoothDevice = device;
+                //stopScanDevices(null);
+                connectDevice();
             }
 
         }
@@ -139,7 +147,8 @@ public class MainActivity extends AppCompatActivity {
         Log.v("brad", "start connect...");
 
         myGattCallback = new MyGattCallback();
-        bluetoothDevice.connectGatt(this, false, myGattCallback);
+        bluetoothGatt = bluetoothDevice.connectGatt(
+                this, false, myGattCallback);
 
 
     }
@@ -153,12 +162,20 @@ public class MainActivity extends AppCompatActivity {
                 Log.v("brad", "ing...");
             }else if (newState == BluetoothProfile.STATE_CONNECTED){
                 Log.v("brad", "ed");
+
+                gatt.discoverServices();
+
             }
         }
 
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
+
+            Log.v("brad", status + ":" + BluetoothGatt.GATT_SUCCESS);
+
+
+
         }
 
         @Override
